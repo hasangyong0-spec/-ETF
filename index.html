@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#F58220">
-<meta name="description" content="미래에셋증권 투자센터대구WM · 실시간 시황 연동 ETF 포트폴리오 제안">
+<meta name="theme-color" content="#043B72">
+<meta name="description" content="MIRAE ASSET 투자센터대구 · 실시간 시황 / ETF 포트폴리오 대시보드">
 <meta property="og:type" content="website">
-<meta property="og:title" content="실시간 시황 ETF 포트폴리오 · 투자센터대구WM">
-<meta property="og:description" content="국내 시세, 전일 미국 마감, 국내 시황, 이슈, 위험성향 3유형 ETF 포트폴리오">
+<meta property="og:title" content="실시간 시황 / ETF 포트폴리오 대시보드">
+<meta property="og:description" content="MIRAE ASSET 투자센터대구 · 국내 시세, 전일 미국 마감, 국내 시황, 주요 뉴스, ETF 포트폴리오 3유형">
 <title>ETF 전략 데스크</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,13 +17,14 @@
 <style>
 :root{
   color-scheme: light;
-  --primary:#F58220; --primary-active:#CB6015; --primary-soft:#FAB072;
-  --secondary:#043B72;
-  --canvas:#FFFFFF; --soft:#ECEFF4; --subtle:#F7F8FA;
-  --hair:#CDCECB; --hair-soft:#E5E4E1;
-  --ink:#1A1A1A; --body:#3D3D3D; --muted:#6C6C6C; --muted2:#84888B;
-  --up:#C62828; --down:#043B72;
-  --c-dom:#F58220; --c-glb:#043B72; --c-thm:#00A9CE; --c-real:#AD624E; --c-fix:#FAB072;
+  /* Mirae Asset blue-led system */
+  --navy:#043B72; --navy-deep:#02294F; --blue:#0086B8; --blue-dp:#00688F;
+  --blue-lt:#8DC8E8; --accent:#F58220; --accent-dp:#CB6015;
+  --canvas:#FFFFFF; --tint:#F4F8FC; --soft:#E9F0F7; --track:#E0EAF3;
+  --hair:#C9D6E2; --hair-soft:#DDE5EE;
+  --ink:#14283C; --body:#3A4A5A; --muted:#63748A; --muted2:#8595A8;
+  --up:#C62828; --down:#1565A8;
+  --c-dom:#043B72; --c-glb:#0086B8; --c-thm:#F58220; --c-real:#AD624E; --c-fix:#8DC8E8;
   --kr:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   --num:'Inter','SF Mono',ui-monospace,monospace;
 }
@@ -34,44 +35,42 @@ body{margin:0;background:var(--canvas);color:var(--body);
   -webkit-font-smoothing:antialiased;}
 h1,h2,h3{color:var(--ink);margin:0;font-weight:700;}
 p{margin:0;}
-.n,table,.big,.val{font-variant-numeric:tabular-nums;font-family:var(--num);}
+.n,table,.big,.val,.fnum{font-variant-numeric:tabular-nums;font-family:var(--num);}
 .up{color:var(--up);} .dn{color:var(--down);}
 
-.wrap{max-width:1120px;margin:0 auto;padding:0 12px 40px;}
+.wrap{max-width:1120px;margin:0 auto;padding:14px 12px 40px;}
 
 /* ---- masthead ---- */
-.mast{border-bottom:1px solid var(--hair);padding:10px 12px 9px;}
+.mast{background:var(--navy);border-bottom:3px solid var(--accent);padding:14px 12px 13px;}
 .mast-in{max-width:1120px;margin:0 auto;}
-.brand{font-size:10.5px;font-weight:500;letter-spacing:.5px;color:var(--primary);}
-.mast h1{font-size:17px;line-height:1.25;letter-spacing:-.3px;margin-top:2px;}
-.asof{font-family:var(--num);font-size:10.5px;color:var(--muted2);margin-top:3px;}
+.brand{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+.brand .en{font-family:var(--num);font-size:17px;font-weight:700;letter-spacing:1.6px;color:#fff;}
+.brand .kr{font-size:15px;font-weight:500;letter-spacing:.2px;color:var(--blue-lt);}
+.mast h1{font-size:18px;line-height:1.3;letter-spacing:-.3px;margin-top:7px;color:#fff;font-weight:700;}
+.mast h1 .slash{color:var(--accent);font-weight:400;margin:0 7px;}
+.asof{font-family:var(--num);font-size:10.5px;color:#A8C6E2;margin-top:6px;}
 
-/* ---- tabs ---- */
-.tabs{position:sticky;top:0;z-index:20;display:flex;background:#fff;
-  border-bottom:1px solid var(--hair);box-shadow:0 1px 6px rgba(0,0,0,.05);}
-.tabs button{flex:1;min-width:0;font-family:var(--kr);font-size:12.5px;font-weight:500;
-  padding:9px 2px;border:0;border-bottom:2px solid transparent;background:#fff;
-  color:var(--muted);cursor:pointer;line-height:1.2;white-space:nowrap;}
-.tabs button[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary);font-weight:700;}
-.tabs button:focus-visible{outline:2px solid var(--primary-active);outline-offset:-2px;}
-.panel[hidden]{display:none;}
-.panel{padding-top:14px;}
-
-/* ---- section head ---- */
-.sec{margin-top:18px;}
+/* ---- section shell ---- */
+.sec{margin-top:22px;}
 .sec:first-child{margin-top:0;}
-.rule{height:1px;background:var(--primary);}
+.rule{height:1px;background:var(--hair);position:relative;}
+.rule::before{content:"";position:absolute;left:0;top:-1px;width:38px;height:3px;background:var(--accent);}
 .sh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;
   margin-top:7px;margin-bottom:9px;}
-.sh h2{font-size:14.5px;letter-spacing:-.2px;}
-.sh .note{font-size:10.5px;color:var(--muted2);font-family:var(--num);text-align:right;}
+.sh h2{font-size:14.5px;letter-spacing:-.2px;color:var(--navy);}
+.sh h2 .ix{font-family:var(--num);font-size:10.5px;font-weight:600;color:var(--accent-dp);
+  margin-right:6px;letter-spacing:.4px;vertical-align:1px;}
+.sh .note{font-size:10.5px;color:var(--muted2);font-family:var(--num);text-align:right;
+  flex-shrink:0;}
+.sub-h{font-size:12px;font-weight:700;color:var(--navy);margin-top:14px;
+  padding-bottom:4px;border-bottom:2px solid var(--soft);}
 
 /* ---- index tiles ---- */
 .idx2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair-soft);
   border:1px solid var(--hair);}
 .idx2 > div{background:#fff;padding:10px 11px;}
-.idx-name{font-size:11px;font-weight:500;letter-spacing:.5px;color:var(--muted);}
-.big{font-size:29px;font-weight:700;line-height:1.05;letter-spacing:-.8px;color:var(--ink);margin-top:1px;}
+.idx-name{font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:1px;color:var(--blue-dp);}
+.big{font-size:28px;font-weight:700;line-height:1.05;letter-spacing:-.8px;color:var(--ink);margin-top:1px;}
 .big-chg{font-family:var(--num);font-size:12px;font-weight:600;margin-top:2px;}
 .idx-meta{font-size:10.5px;color:var(--muted2);margin-top:7px;padding-top:6px;
   border-top:1px solid var(--hair-soft);line-height:1.45;}
@@ -83,61 +82,70 @@ p{margin:0;}
 .val{font-size:16px;font-weight:700;color:var(--ink);line-height:1.2;margin-top:1px;}
 .q-chg{font-family:var(--num);font-size:10.5px;font-weight:600;margin-top:1px;}
 
-/* ---- compact table ---- */
+/* ---- tables ---- */
 .tw{border:1px solid var(--hair);overflow-x:auto;}
 table{border-collapse:collapse;width:100%;font-size:12px;}
-thead th{background:var(--primary-soft);color:#1A1A1A;font-weight:700;text-align:left;
+thead th{background:var(--navy);color:#fff;font-weight:700;text-align:left;
   padding:7px 8px;white-space:nowrap;font-size:11.5px;}
 tbody td{padding:6px 8px;border-top:1px solid var(--hair-soft);color:var(--body);vertical-align:top;}
-td.n,th.n{text-align:right;}
-tbody tr.tot td{background:#D7D7D7;font-weight:700;color:var(--ink);}
-.sub{display:block;font-size:10px;color:var(--muted2);line-height:1.35;margin-top:1px;
-  font-family:var(--kr);}
+tbody tr:nth-child(even) td{background:#FAFCFE;}
+td.n,th.n{text-align:right;white-space:nowrap;}
+tbody tr.tot td{background:var(--soft);font-weight:700;color:var(--navy);
+  border-top:2px solid var(--navy);}
+.sub{display:block;font-size:10px;color:var(--muted2);line-height:1.35;margin-top:1px;font-family:var(--kr);}
 .sub .cd{font-family:var(--num);}
+.nm{font-weight:500;color:var(--ink);white-space:nowrap;}
+.src-note{font-size:10px;color:var(--muted2);margin-top:5px;line-height:1.5;}
 
-/* ---- notes / kv ---- */
-.notes{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px;}
-.note-row{display:grid;grid-template-columns:42px 1fr;gap:8px;font-size:11.5px;
-  line-height:1.5;color:var(--body);}
-.note-row b{font-size:10.5px;font-weight:700;color:#fff;background:var(--secondary);
-  border-radius:2px;padding:2px 0;text-align:center;height:17px;line-height:13px;}
-.note-row.good b{background:var(--up);}
+/* ---- comment blocks ---- */
+.cmt{border:1px solid var(--hair);border-left:3px solid var(--navy);
+  padding:10px 12px 11px;background:var(--tint);}
+.cmt h3{font-size:12.5px;margin-bottom:5px;color:var(--navy);}
+.cmt p{font-size:12px;line-height:1.65;color:var(--body);}
+.cmt p + p{margin-top:8px;}
+.cmt .lead{font-weight:700;color:var(--ink);}
+.cmt.tight{border-left-color:var(--blue-dp);}
 
-.cards{display:grid;grid-template-columns:1fr;gap:9px;}
-.card{border:1px solid var(--hair);padding:9px 11px 10px;background:#fff;}
-.card h3{font-size:12.5px;font-weight:700;}
-.kv{display:flex;justify-content:space-between;gap:10px;padding:5px 0;
-  border-bottom:1px solid var(--hair-soft);font-size:12px;}
-.kv:last-of-type{border-bottom:0;}
-.kv dt{color:var(--muted);min-width:0;}
-.kv dd{margin:0;font-family:var(--num);font-weight:600;color:var(--ink);white-space:nowrap;}
-.card .tail{font-size:10.5px;color:var(--muted2);margin-top:5px;line-height:1.45;}
+/* ---- flow row (수급) ---- */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair-soft);
+  border:1px solid var(--hair);}
+.flow > div{background:var(--tint);padding:9px 8px;text-align:center;}
+.flow .f-name{font-size:10.5px;color:var(--muted);letter-spacing:.3px;}
+.fnum{font-size:15px;font-weight:700;line-height:1.2;margin-top:2px;}
+.flow .f-tag{font-size:9.5px;color:var(--muted2);margin-top:1px;}
 
-.read{font-size:12px;line-height:1.6;color:var(--body);margin-top:10px;
-  border-left:2px solid var(--primary);padding-left:9px;}
+/* ---- sector bars ---- */
+.sect{border:1px solid var(--hair);padding:4px 11px 8px;}
+.srow{display:grid;grid-template-columns:88px 1fr 46px;gap:8px;align-items:center;
+  padding:5px 0;border-bottom:1px solid var(--hair-soft);}
+.srow:last-child{border-bottom:0;}
+.srow .s-nm{font-size:11px;color:var(--body);line-height:1.25;}
+.srow .s-track{height:8px;background:var(--track);}
+.srow .s-fill{height:8px;display:block;}
+.srow .s-val{font-family:var(--num);font-size:11.5px;font-weight:600;text-align:right;}
 
-/* ---- issues ---- */
-.issues{display:grid;grid-template-columns:1fr;gap:9px;}
-.iss{border:1px solid var(--hair);padding:9px 11px 10px;}
-.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.3px;
-  padding:2px 6px;border-radius:2px;line-height:1.4;color:#fff;}
-.t-crit{background:#C62828;} .t-oil{background:var(--primary);}
-.t-rate{background:var(--secondary);}
-.t-dom{background:var(--soft);color:var(--secondary);border:1px solid var(--hair);}
-.iss h3{font-size:12.5px;font-weight:700;line-height:1.4;margin-top:5px;}
-.iss p{font-size:11.5px;line-height:1.55;margin-top:5px;color:var(--body);}
-.iss .imp{font-size:11px;color:var(--muted);margin-top:6px;
-  border-left:2px solid var(--primary);padding-left:8px;line-height:1.5;}
+/* ---- news ---- */
+.news{display:grid;grid-template-columns:1fr;gap:1px;background:var(--hair-soft);
+  border:1px solid var(--hair);}
+.nw{background:#fff;padding:9px 11px 10px;}
+.nw-top{display:flex;align-items:center;gap:6px;}
+.chip{font-size:9.5px;font-weight:700;letter-spacing:.3px;padding:2px 5px;border-radius:2px;
+  color:#fff;white-space:nowrap;line-height:1.4;}
+.c-geo{background:#C62828;} .c-oil{background:var(--accent-dp);}
+.c-rate{background:var(--navy);} .c-fed{background:#6B2E8F;}
+.c-semi{background:var(--blue-dp);} .c-kr{background:#3F5468;} .c-evt{background:#AD624E;}
+.nw-no{font-family:var(--num);font-size:10px;color:var(--muted2);font-weight:600;}
+.nw h3{font-size:12.5px;font-weight:700;line-height:1.4;margin-top:5px;color:var(--navy);}
+.nw p{font-size:11.5px;line-height:1.55;color:var(--muted);margin-top:4px;}
 
 /* ---- portfolio ---- */
-.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;color:var(--muted);
-  margin-bottom:9px;}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;color:var(--muted);margin-bottom:9px;}
 .legend span{display:inline-flex;align-items:center;gap:4px;}
 .legend i{width:8px;height:8px;display:inline-block;}
 .pfs{display:grid;grid-template-columns:1fr;gap:9px;}
 .pf{border:1px solid var(--hair);padding:9px 11px 10px;}
 .pf-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
-.pf-name{font-size:13.5px;font-weight:700;color:var(--ink);}
+.pf-name{font-size:13.5px;font-weight:700;color:var(--navy);}
 .pf-mix{font-family:var(--num);font-size:10.5px;color:var(--muted);white-space:nowrap;}
 .bar{display:flex;height:14px;gap:2px;margin-top:7px;}
 .bar span{display:block;}
@@ -145,58 +153,56 @@ tbody tr.tot td{background:#D7D7D7;font-weight:700;color:var(--ink);}
   color:var(--muted2);margin-top:4px;}
 .pf p{font-size:11.5px;line-height:1.55;margin-top:6px;}
 
-.callout{background:var(--primary);color:#fff;border-radius:4px;padding:12px 14px;margin-top:14px;}
+.callout{background:var(--navy);color:#fff;border-radius:4px;padding:12px 14px;margin-top:14px;
+  border-left:4px solid var(--accent);}
 .callout h3{color:#fff;font-size:13px;}
 .callout ol{margin:7px 0 0;padding-left:16px;font-size:11.5px;line-height:1.6;}
 .callout li + li{margin-top:4px;}
 
-.foot{border-top:1px solid var(--hair);margin-top:20px;padding-top:11px;
+.foot{border-top:1px solid var(--hair);margin-top:24px;padding-top:11px;
   font-size:10px;color:var(--muted2);line-height:1.55;}
 .foot b{color:var(--muted);}
 
 /* ---- wider screens ---- */
 @media (min-width:700px){
   body{font-size:14px;}
-  .wrap{padding:0 20px 56px;}
-  .mast{padding:14px 20px 12px;}
-  .mast h1{font-size:22px;}
-  .brand{font-size:11.5px;}
-  .asof{font-size:11.5px;}
-  .tabs button{font-size:13.5px;padding:11px 4px;}
-  .sh h2{font-size:17px;} .sh .note{font-size:11.5px;}
+  .wrap{padding:20px 20px 56px;}
+  .mast{padding:20px 20px 18px;}
+  .mast h1{font-size:25px;margin-top:9px;}
+  .brand .en{font-size:22px;letter-spacing:2.2px;}
+  .brand .kr{font-size:18px;}
+  .asof{font-size:11.5px;margin-top:8px;}
+  .sec{margin-top:34px;}
+  .sh h2{font-size:17px;} .sh h2 .ix{font-size:11.5px;} .sh .note{font-size:11.5px;}
+  .sub-h{font-size:13px;margin-top:18px;}
   .idx2 > div{padding:14px 16px;}
-  .big{font-size:40px;}
-  .big-chg{font-size:14px;}
-  .idx-meta{font-size:11.5px;}
+  .big{font-size:40px;} .big-chg{font-size:14px;} .idx-meta{font-size:11.5px;}
   .grid6{grid-template-columns:repeat(6,1fr);}
   .grid6 > div{padding:11px 12px;}
   .q-name{font-size:11px;} .val{font-size:19px;} .q-chg{font-size:11.5px;}
   table{font-size:13px;} thead th{font-size:12.5px;padding:9px 11px;}
   tbody td{padding:8px 11px;} .sub{font-size:11px;}
-  .cards{grid-template-columns:repeat(3,1fr);gap:14px;}
-  .card{padding:13px 15px 14px;} .card h3{font-size:14px;} .kv{font-size:13px;}
-  .issues{grid-template-columns:1fr 1fr;gap:14px;}
-  .iss{padding:13px 15px 14px;} .iss h3{font-size:14.5px;} .iss p{font-size:12.5px;}
-  .iss .imp{font-size:12px;}
+  .src-note{font-size:11px;margin-top:6px;}
+  .cmt{padding:15px 18px 16px;} .cmt h3{font-size:14.5px;} .cmt p{font-size:13px;line-height:1.7;}
+  .flow > div{padding:13px 10px;} .flow .f-name{font-size:11.5px;} .fnum{font-size:20px;}
+  .flow .f-tag{font-size:10.5px;}
+  .sect{padding:6px 16px 10px;}
+  .srow{grid-template-columns:130px 1fr 60px;gap:14px;padding:7px 0;}
+  .srow .s-nm{font-size:12.5px;} .srow .s-val{font-size:13px;}
+  .srow .s-track,.srow .s-fill{height:10px;}
+  .news{grid-template-columns:1fr 1fr;}
+  .nw{padding:12px 15px 13px;} .nw h3{font-size:14px;} .nw p{font-size:12.5px;}
   .pfs{grid-template-columns:repeat(3,1fr);gap:14px;}
   .pf{padding:13px 15px 14px;} .pf-name{font-size:15px;} .pf p{font-size:12.5px;}
-  .notes{grid-template-columns:1fr 1fr;gap:10px;}
-  .note-row{font-size:12.5px;}
-  .read{font-size:13px;}
   .legend{font-size:11.5px;}
   .callout{padding:18px 22px;} .callout h3{font-size:15px;} .callout ol{font-size:12.5px;}
-  .sec{margin-top:26px;}
-  .panel{padding-top:20px;}
   .foot{font-size:11px;}
 }
 
 @media print{
-  .tabs{display:none!important;}
-  .panel[hidden]{display:block!important;}
-  .panel{page-break-before:always;padding-top:0;}
-  .panel:first-of-type{page-break-before:auto;}
   body{font-size:9.5pt;}
-  .iss,.pf,.card,table{page-break-inside:avoid;}
+  .nw,.pf,.cmt,table,.sect{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
 </style>
@@ -205,370 +211,561 @@ tbody tr.tot td{background:#D7D7D7;font-weight:700;color:var(--ink);}
 
 <header class="mast">
   <div class="mast-in">
-    <div class="brand">미래에셋증권 · 투자센터대구WM</div>
-    <h1>실시간 시황 ETF 포트폴리오</h1>
-    <div class="asof">2026.09.02 (수) 오전 장중 스냅샷 · 중동 리스크 재점화 국면</div>
+    <div class="brand"><span class="en">MIRAE ASSET</span><span class="kr">투자센터대구</span></div>
+    <h1>실시간 시황<span class="slash">/</span>ETF 포트폴리오 대시보드</h1>
+    <div class="asof">시세 <span id="stamp">—</span> KST <span id="sess"></span> 자동 갱신 · 코멘트 기준 2026.09.02 (수) 13:30</div>
   </div>
 </header>
 
-<nav class="tabs" role="tablist" aria-label="섹션">
-  <button type="button" role="tab" id="t1" aria-controls="p1" aria-selected="true">시세</button>
-  <button type="button" role="tab" id="t2" aria-controls="p2" aria-selected="false">국내시황</button>
-  <button type="button" role="tab" id="t3" aria-controls="p3" aria-selected="false">이슈</button>
-  <button type="button" role="tab" id="t4" aria-controls="p4" aria-selected="false">포트폴리오</button>
-</nav>
-
 <div class="wrap">
 
-<!-- ============ TAB 1 : 시세 ============ -->
-<div class="panel" id="p1" role="tabpanel" aria-labelledby="t1">
+<!-- ===== 01 실시간 국내 시세 ===== -->
+<section class="sec">
+  <div class="rule"></div>
+  <div class="sh">
+    <h2><span class="ix">01</span>실시간 국내 시세</h2>
+    <span class="note"><span id="stamp2">—</span> · 10분 주기</span>
+  </div>
 
-  <section class="sec">
-    <div class="rule"></div>
-    <div class="sh">
-      <h2>실시간 국내 시세</h2>
-      <span class="note">코스피 09:31 · 코스닥 10:58</span>
+  <div class="idx2">
+    <div data-idx="KOSPI">
+      <div class="idx-name">KOSPI</div>
+      <div class="big">—</div>
+      <div class="big-chg">—</div>
+      <div class="idx-meta">—</div>
+    </div>
+    <div data-idx="KOSDAQ">
+      <div class="idx-name">KOSDAQ</div>
+      <div class="big">—</div>
+      <div class="big-chg">—</div>
+      <div class="idx-meta">—</div>
+    </div>
+  </div>
+
+  <div class="grid6" id="q-strip"></div>
+  <p class="src-note">원자재·금리는 해외 장 기준이며 일부 항목은 전일 대비가 제공되지 않아 시가 대비로 표기됩니다(※ 표시).
+  시세는 10분마다 자동 갱신되고, 장중(평일 08:40~15:50)에는 이 화면이 5분마다 스스로 새로고침됩니다.</p>
+</section>
+
+<!-- ===== 02 전일 미국 마감시황 ===== -->
+<section class="sec">
+  <div class="rule"></div>
+  <div class="sh">
+    <h2><span class="ix">02</span>전일 미국 마감시황</h2>
+    <span class="note">9/1 (화) · 3거래일 연속 하락</span>
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>지수 · 자산</th><th class="n">종가</th><th class="n">등락</th><th class="n">등락률</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="nm">S&amp;P 500</td><td class="n">7,631.47</td><td class="n dn">−54.67</td><td class="n dn">−0.71%</td></tr>
+        <tr><td class="nm">나스닥 종합</td><td class="n">26,099.77</td><td class="n dn">−271.12</td><td class="n dn">−1.03%</td></tr>
+        <tr><td class="nm">다우 산업</td><td class="n">52,767</td><td class="n dn">—</td><td class="n dn">−0.79%</td></tr>
+        <tr><td class="nm">WTI 원유</td><td class="n">90.22</td><td class="n up">+4.4</td><td class="n up">+5.2%</td></tr>
+        <tr><td class="nm">미 10년물 국채<span class="sub">장중 고점 4.798% · 19개월 최고</span></td><td class="n">4.722%</td><td class="n up">+7.6bp</td><td class="n up">—</td></tr>
+        <tr><td class="nm">미 30년물 국채<span class="sub">장중 고점 5.241%</span></td><td class="n">5.174%</td><td class="n up">—</td><td class="n up">—</td></tr>
+        <tr><td class="nm">VIX</td><td class="n">16.34</td><td class="n up">+1.42</td><td class="n up">+9.52%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cmt" style="margin-top:10px;">
+    <h3>마감 코멘트 — 하락의 진짜 원인은 지수가 아니라 금리다</h3>
+    <p><span class="lead">가장 중요한 이슈는 호르무즈였습니다.</span> 미 중부사령부가 9월 1일 정오부터 이란 혁명수비대 목표물을 타격하면서 미·이란 충돌이 재개됐고, WTI는 하루 만에 5.2% 뛰어 90.22달러, 브렌트유는 94.65달러로 마감했습니다. 6월 11일 이후 처음 90달러선을 되찾은 것이며 올해 누적으로는 40% 넘게 올랐습니다.</p>
+    <p><span class="lead">유가가 주식을 직접 떨어뜨린 것은 아닙니다.</span> 경로는 유가 → 인플레이션 기대 → 금리입니다. 미 10년물이 장중 4.798%까지 올라 19개월 최고를 기록했고 30년물은 5.24%를 터치했습니다. 일본 10년물마저 1996년 이후 처음으로 3%를 넘어서며 글로벌 채권이 동반 매도됐습니다. 금리가 오르면 먼 미래의 이익을 현재가치로 환산하는 할인율이 커지므로, 이익이 뒤에 몰려 있는 고밸류 성장주가 가장 크게 깎입니다.</p>
+    <p><span class="lead">여기에 연준 변수가 겹쳤습니다.</span> 케빈 워시 신임 연준 의장이 8월 28일 잭슨홀 연설에서 "물가 안정 측면에서 최근 지표는 여전히 우려스럽다"며 추가 긴축 가능성을 열어둔 뒤, 9월 16일 FOMC의 금리 <b>인상</b> 확률이 35%대에서 66~68%로 뛰었습니다. 시장이 인하 시점을 따지던 국면에서 인상 여부를 따지는 국면으로 넘어간 것이 이번 조정의 본질적 배경입니다.</p>
+    <p><span class="lead">그래서 지수 낙폭보다 내부 편차가 컸습니다.</span> S&amp;P500은 −0.71%에 그쳤지만 필라델피아반도체지수는 −2.1%, 나스닥은 −1.03%였습니다. 엔비디아 −1.51%, 마이크론 −2.64%, AMD −2.30%로 반도체가 밀렸고 사이버보안·고밸류 소프트웨어는 −5~8%대 급락했습니다. 반면 저변동성 지수(SPLV)는 −0.20%로 거의 버텼습니다. 시장이 위험을 줄인 것이 아니라 듀레이션을 줄인 것입니다.</p>
+    <p><span class="lead">앞으로의 분기점은 두 날짜입니다.</span> 9월 4일 미국 고용지표와 9월 11일 CPI가 인상 여부를 사실상 결정합니다. 씨티와 JP모간은 시장이 성급하다는 입장이고 뱅크오브아메리카는 인상해야 한다는 입장으로 월가 전망도 갈려 있습니다.</p>
+  </div>
+</section>
+
+<!-- ===== 03 현재 국내 시황 ===== -->
+<section class="sec">
+  <div class="rule"></div>
+  <div class="sh">
+    <h2><span class="ix">03</span>현재 국내 시황</h2>
+    <span class="note">9/2 13:30 기준</span>
+  </div>
+
+  <div class="cmt">
+    <h3>한눈에 보는 오늘</h3>
+    <p>코스피는 −3.08% 갭다운으로 출발해 오전 한때 6,687까지 되돌렸다가 오후에 다시 밀려 <b>6,584.77(−3.67%)</b>로 저점권에 있습니다. 외국인과 기관이 각각 1.6조원씩 던지고 개인이 2조원 가까이 받는 일방적 구도이며, 상승 업종은 의료·정밀기기와 섬유·의류 둘뿐입니다. 반도체·자동차·조선·건설이 동시에 맞았고, 버틴 곳은 금리 상승 수혜인 금융과 정제마진 수혜인 정유뿐입니다. 코스닥은 −1.04%로 상대적으로 선방했습니다.</p>
+  </div>
+
+  <div class="sub-h">수급 — 투자자별 순매수 (코스피 누적)</div>
+  <div class="flow" id="flow"></div>
+  <p class="src-note">양수는 순매수, 음수는 순매도. 네이버 금융 투자자별 매매동향 기준.</p>
+
+  <div class="sub-h">업종별 등락률 (코스피)</div>
+  <div class="sect" id="sectors"></div>
+  <p class="src-note">상승 상위 2개와 하락 하위 4개. 막대 길이는 등락 폭의 절대값 기준, 붉은색 상승·파란색 하락.</p>
+
+  <div class="sub-h">특징 종목과 이슈</div>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>종목</th><th class="n">등락률</th><th>이슈</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="nm">SK</td><td class="n" data-stock="SK">—</td><td>하이닉스·SK스퀘어 지분가치 동반 하락, 지주 디스카운트 확대</td></tr>
+        <tr><td class="nm">포스코퓨처엠</td><td class="n" data-stock="포스코퓨처엠">—</td><td>금리 급등에 이익이 뒤에 몰린 2차전지 소재 밸류 직격</td></tr>
+        <tr><td class="nm">HD한국조선해양</td><td class="n" data-stock="HD한국조선해양">—</td><td>장전 지정학 수혜 기대로 급등했다가 정규장 패닉셀에 되밀림</td></tr>
+        <tr><td class="nm">두산</td><td class="n" data-stock="두산">—</td><td>지주·성장 테마 동반 청산</td></tr>
+        <tr><td class="nm">SK스퀘어</td><td class="n" data-stock="SK스퀘어">—</td><td>보유 하이닉스 지분 가치에 연동, 낙폭 확대</td></tr>
+        <tr><td class="nm">HD현대일렉트릭</td><td class="n" data-stock="HD현대일렉트릭">—</td><td>전력기기 고밸류주, 금리 상승 국면에서 멀티플 축소</td></tr>
+        <tr><td class="nm">SK하이닉스</td><td class="n" data-stock="SK하이닉스">—</td><td>유가·금리·중국 HBM 3중고. ADR −2.31%, CXMT의 HBM3E 소량 생산 부담</td></tr>
+        <tr><td class="nm">삼성전자</td><td class="n" data-stock="삼성전자">—</td><td>필라델피아반도체지수 −2.1% 영향, 외국인 대량 순매도 집중</td></tr>
+        <tr><td class="nm">메리츠금융지주</td><td class="n" data-stock="메리츠금융지주">—</td><td>금리 상승 수혜 · 조정장 배당 매력, 금융주 중 최대 강세</td></tr>
+        <tr><td class="nm">에쓰오일 (S-Oil)</td><td class="n" data-stock="에쓰오일">—</td><td>유가·정제마진 상승 직접 수혜, 하락장에서 상승 방어</td></tr>
+        <tr><td class="nm">신한지주</td><td class="n" data-stock="신한지주">—</td><td>순이자마진 개선 기대, 금리 상승기 방어 섹터</td></tr>
+        <tr><td class="nm">ISC (코스닥)</td><td class="n" data-stock="ISC">—</td><td>반도체 테스트 소켓 수요 기대, 코스닥 후공정 개별 강세</td></tr>
+        <tr><td class="nm">서진시스템 (코스닥)</td><td class="n" data-stock="서진시스템">—</td><td>ESS·통신장비 고밸류 성장주 청산 압력</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src-note">등락률은 10분 주기로 자동 갱신되며, 이슈 설명은 코멘트 갱신 시점 기준입니다.</p>
+
+  <div class="cmt tight" style="margin-top:12px;">
+    <h3>종합 코멘트 — 미국발 충격이 8할, 국내 요인이 2할</h3>
+    <p><span class="lead">첫째, 하락의 주된 원인은 미국에서 왔습니다.</span> 뉴욕증시가 3거래일 연속 밀렸고 그 원인인 유가 급등과 금리 급등이 그대로 넘어왔습니다. 코스피는 시가총액에서 반도체 비중이 압도적으로 높아 필라델피아반도체지수 −2.1%에 가장 민감하게 반응하는 지수입니다. 여기에 9월 FOMC 인상 확률이 66~68%로 뛴 것이 외국인 자금의 이탈 명분이 됐습니다. 오늘 외국인 1.6조원 순매도는 개별 종목에 대한 판단이 아니라 신흥국 주식 비중 축소입니다.</p>
+    <p><span class="lead">둘째, 국내 고유 악재가 낙폭을 키웠습니다.</span> ① 반도체는 유가·금리 외에 중국 CXMT의 HBM3E 소량 생산과 알리바바 자회사 T헤드의 호환성 시험 소식이 겹쳐 3중고 상태입니다. ② 장전 시간외에서 한때 두 자릿수까지 올랐던 방산·조선·정유가 정규장 개시 후 시장 전체의 패닉셀에 되밀렸습니다. 지정학 수혜 논리가 틀린 것이 아니라, 유동성이 빠지는 날에는 수혜주도 함께 팔린다는 뜻입니다. ③ 한국은 중동산 원유 의존도가 높아 유가·해상운임·보험료가 동시에 오르는 복합 원가 부담을 받습니다. 운송장비·부품이 −5.44%로 업종 최하위인 것은 우연이 아닙니다.</p>
+    <p><span class="lead">셋째, 버틴 곳이 방향을 알려줍니다.</span> 금리 상승 수혜인 금융(메리츠 +4.0%)과 정제마진 수혜인 정유(S-Oil +0.6%)만 상승했습니다. 시장이 파는 것은 '한국'이 아니라 '듀레이션'입니다. 따라서 오늘의 대응은 지수 반등에 베팅하는 것이 아니라, 금리와 유가라는 두 충격의 반대편에 서 있는 자산으로 포트폴리오의 무게중심을 옮기는 것이어야 합니다. 개인 홀로 2조원을 받는 구조는 외국인 매도가 멈추기 전까지 오래 지속되기 어렵습니다.</p>
+  </div>
+</section>
+
+<!-- ===== 04 주요 뉴스 ===== -->
+<section class="sec">
+  <div class="rule"></div>
+  <div class="sh">
+    <h2><span class="ix">04</span>주요 뉴스 &amp; 이슈</h2>
+    <span class="note">영향도 순 · 14건</span>
+  </div>
+
+  <div class="news">
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-geo">지정학</span><span class="nw-no">01</span></div>
+      <h3>미 중부사령부, 이란 혁명수비대 타격 — 충돌 재개</h3>
+      <p>9월 1일 정오부터 공습이 시작돼 케슘섬·반다르아바스·차바하르에서 폭발이 보고됐습니다. 혁명수비대의 상선 공격 시도와 주둔 미군 공격에 대한 대응이라는 설명입니다. 양측 모두 '제한적·통제된 대치'로 규정하고 있으나 이란의 추가 보복 가능성이 남아 있습니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-geo">지정학</span><span class="nw-no">02</span></div>
+      <h3>호르무즈 통항 마비 — 원유 탱커 통과 0척</h3>
+      <p>8월 31일 호르무즈를 통과한 선박은 5척으로 최근 10일 평균 14척을 크게 밑돌았고, 원유 탱커는 단 한 척도 통과하지 못했습니다. 유가가 재고가 아니라 물류로 결정되는 국면입니다. 이 숫자의 정상화가 리스크 완화의 1차 신호입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-geo">지정학</span><span class="nw-no">03</span></div>
+      <h3>초대형 유조선 2척 피격 — 한국 선사 운항 선박 포함</h3>
+      <p>8월 31일 호르무즈를 빠져나오던 VLCC 2척(각 원유 200만 배럴)이 정체불명 발사체에 맞았고, 한국 시노코가 운항하는 세네갈 프로스페리티호가 포함됐습니다. 해상 보험료 급등으로 한국 정유·해운의 조달 비용이 직접 오릅니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-oil">정책 전환</span><span class="nw-no">04</span></div>
+      <h3>미국 목표가 '종전 합의'에서 '석유 확보'로 이동</h3>
+      <p>크리스 라이트 에너지부 장관은 "이란의 협조 여부와 관계없이 호르무즈를 통한 석유·가스 수송을 보장하겠다"고 밝혔습니다. 본토 공습에서 유조선 호위·기뢰 제거 중심의 해상 작전으로 무게가 옮겨가며, 단기 스파이크가 아닌 장기 주둔 시나리오가 유력해졌습니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-oil">원자재</span><span class="nw-no">05</span></div>
+      <h3>WTI 90달러 재돌파 — 연초 대비 40% 이상 상승</h3>
+      <p>9월 1일 WTI는 5.2% 급등해 90.22달러, 브렌트유는 4.6% 올라 94.65달러로 마감했습니다. 6월 11일 이후 처음 90달러선을 회복한 것이며, 유가는 이제 인플레이션 지표를 통해 금리와 주식 밸류에이션에 직접 연결되는 변수입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-fed">통화정책</span><span class="nw-no">06</span></div>
+      <h3>워시 연준 의장 잭슨홀 매파 연설 — 9월 인상 확률 35%→66%</h3>
+      <p>케빈 워시 신임 의장은 8월 28일 취임 첫 기조연설에서 "물가 안정 측면에서 최근 지표는 여전히 우려스럽다"며 추가 긴축 가능성을 열어뒀습니다. 9월 16일 FOMC 인상 확률이 하루 만에 35.4%에서 59.7%로 뛰었고 이후 66~68%까지 상승했습니다. 인하 시점이 아니라 인상 여부를 따지는 국면입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-rate">금리</span><span class="nw-no">07</span></div>
+      <h3>미 10년물 4.798% — 19개월 최고</h3>
+      <p>9월 1일 장중 4.798%까지 올라 작년 1월 이후 최고를 기록하고 4.722%로 마감했습니다. 30년물은 5.241%를 터치한 뒤 5.174%로 마쳤습니다. 이 국면에서 장기채는 안전자산이 아니라 위험자산이며, 채권 비중은 유지하되 듀레이션을 짧게 가져가야 하는 이유입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-rate">금리</span><span class="nw-no">08</span></div>
+      <h3>일본 10년물 3% 돌파 — 1996년 이후 처음</h3>
+      <p>글로벌 채권 동반 매도 속에 일본 10년물이 30년 만에 3%를 넘었습니다. 엔 캐리 자금의 되돌림 가능성이 커지는 신호로, 신흥국 주식 수급에 구조적 부담을 줍니다. 오늘 외국인 1.6조원 순매도의 배경 중 하나입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-semi">반도체</span><span class="nw-no">09</span></div>
+      <h3>중국 CXMT, HBM3E 소량 생산 착수</h3>
+      <p>알리바바 자회사 T헤드 등 중국 팹리스가 호환성 시험을 진행 중이며 내년 CXMT HBM3E 탑재 제품 출시 가능성도 제기됩니다. HBM은 삼성전자·SK하이닉스 실적의 핵심 축이므로, 이 경쟁 구도 변화는 유가·금리와 별개인 구조적 변수입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-semi">반도체</span><span class="nw-no">10</span></div>
+      <h3>필라델피아반도체지수 −2.1% — 엔비디아·마이크론·AMD 동반 약세</h3>
+      <p>엔비디아 −1.51%, 마이크론 −2.64%, AMD −2.30%로 밀렸고 SK하이닉스 ADR도 −2.31%였습니다. 코스피는 반도체 시총 비중이 압도적으로 높아 이 지수에 가장 민감하게 반응합니다. 오늘 전기·전자 −4.13%의 직접 원인입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-kr">국내</span><span class="nw-no">11</span></div>
+      <h3>한국은행 기준금리 3.00% — 긴축 사이클 진행 중</h3>
+      <p>신현송 총재 체제에서 기준금리가 3.00%까지 인상됐습니다. 미국이 인상을 논의하는 국면에서는 한은의 완화 전환 여지도 좁아집니다. 국내 채권 투자에서도 장기물보다 단기물이 유리한 환경입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-kr">국내</span><span class="nw-no">12</span></div>
+      <h3>지정학 수혜주 롤러코스터 — 방산·조선·정유의 장전 급등 후 반락</h3>
+      <p>시간외에서 두 자릿수까지 올랐던 종목들이 정규장에서는 시장 전체 패닉셀에 되밀렸습니다. HD한국조선해양은 −7.2%로 마감권입니다. 수혜 논리가 틀린 것이 아니라, 유동성이 빠지는 날에는 수혜주도 함께 팔린다는 점을 확인한 사례입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-evt">미국 섹터</span><span class="nw-no">13</span></div>
+      <h3>고밸류 소프트웨어·사이버보안 급락 vs 저변동성 방어</h3>
+      <p>액손 −8.52%, 크라우드스트라이크 −6.90%, 팔로알토 −5.24%로 밀린 반면, 저변동성 지수(SPLV)는 −0.20%에 그쳤고 애플은 CEO 승계 발표에 +2.61%, 모더나는 암 백신 진전에 +9.93% 올랐습니다. 시장이 위험 자체가 아니라 듀레이션을 줄이고 있다는 증거입니다.</p>
+    </div>
+    <div class="nw">
+      <div class="nw-top"><span class="chip c-evt">일정</span><span class="nw-no">14</span></div>
+      <h3>9월 4일 미 고용지표, 9월 11일 CPI — 인상 여부의 분기점</h3>
+      <p>이 두 지표가 9월 16일 FOMC를 사실상 결정합니다. 씨티와 JP모간은 시장이 성급하다는 입장, 뱅크오브아메리카는 인상해야 한다는 입장으로 월가 전망이 갈려 있습니다. 두 발표 전까지는 포지션을 크게 늘리기보다 분할 대응이 합리적입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 ETF 포트폴리오 ===== -->
+<section class="sec">
+  <div class="rule"></div>
+  <div class="sh">
+    <h2><span class="ix">05</span>ETF 포트폴리오 제안</h2>
+    <span class="note">국내 상장 ETF · 3유형</span>
+  </div>
+
+  <div class="cmt" style="margin-bottom:14px;">
+    <p>네 가지 원칙이 세 포트폴리오에 공통으로 깔려 있습니다. ① 듀레이션은 짧게 ② 유가는 헤지가 아니라 편입으로 ③ 지정학 프리미엄은 방산·조선으로 ④ 반도체는 버리지 않고 나눠 담기. 차이는 베팅 크기뿐입니다.</p>
+  </div>
+
+  <div class="legend" aria-hidden="true">
+    <span><i style="background:var(--c-dom)"></i>국내주식</span>
+    <span><i style="background:var(--c-glb)"></i>해외주식</span>
+    <span><i style="background:var(--c-thm)"></i>국내테마</span>
+    <span><i style="background:var(--c-real)"></i>실물자산</span>
+    <span><i style="background:var(--c-fix)"></i>채권·현금</span>
+  </div>
+
+  <div class="pfs">
+    <div class="pf">
+      <div class="pf-top"><span class="pf-name">안정추구형</span><span class="pf-mix">주식 35 · 실물 15 · 채권 50</span></div>
+      <div class="bar" role="img" aria-label="국내주식 10%, 해외주식 15%, 국내테마 10%, 실물자산 15%, 채권·현금 50%">
+        <span style="width:10%;background:var(--c-dom)"></span>
+        <span style="width:15%;background:var(--c-glb)"></span>
+        <span style="width:10%;background:var(--c-thm)"></span>
+        <span style="width:15%;background:var(--c-real)"></span>
+        <span style="width:50%;background:var(--c-fix)"></span>
+      </div>
+      <div class="bar-lab"><span>국내 10</span><span>해외 15</span><span>테마 10</span><span>실물 15</span><span>채권 50</span></div>
+      <p>원금 방어가 1순위인 고객. 채권 절반을 깔되 만기를 짧게 가져가 금리 상승 손실을 차단하고, 주식은 배당과 은행으로만 노출합니다. 유가·금은 보험 성격의 소액입니다.</p>
     </div>
 
-    <div class="idx2">
-      <div>
-        <div class="idx-name">KOSPI</div>
-        <div class="big dn">6,666.72</div>
-        <div class="big-chg dn">▼169.08 (−2.47%)</div>
-        <div class="idx-meta">일중 6,625.47 ~ 6,687.37<br>전일 6,835.80 · −3.08% 갭다운 출발</div>
+    <div class="pf">
+      <div class="pf-top"><span class="pf-name">위험중립형</span><span class="pf-mix">주식 60 · 실물 20 · 채권 20</span></div>
+      <div class="bar" role="img" aria-label="국내주식 15%, 해외주식 20%, 국내테마 25%, 실물자산 20%, 채권·현금 20%">
+        <span style="width:15%;background:var(--c-dom)"></span>
+        <span style="width:20%;background:var(--c-glb)"></span>
+        <span style="width:25%;background:var(--c-thm)"></span>
+        <span style="width:20%;background:var(--c-real)"></span>
+        <span style="width:20%;background:var(--c-fix)"></span>
       </div>
-      <div>
-        <div class="idx-name">KOSDAQ</div>
-        <div class="big dn">818.86</div>
-        <div class="big-chg dn">▼15.43 (−1.85%)</div>
-        <div class="idx-meta">일중 818.70 ~ 833.52<br>전일 834.29 · 800선 터치 후 회복</div>
-      </div>
+      <div class="bar-lab"><span>국내 15</span><span>해외 20</span><span>테마 25</span><span>실물 20</span><span>채권 20</span></div>
+      <p>이번 국면의 표준 해법. 실물자산을 20%까지 올려 유가 충격을 포트폴리오 안에서 상쇄하고, 테마는 이 뉴스가 실적으로 연결되는 방산·조선에만 집중합니다. 반도체는 아직 담지 않습니다.</p>
     </div>
 
-    <div class="grid6">
-      <div>
-        <div class="q-name">원/달러</div>
-        <div class="val">1,373.56</div>
-        <div class="q-chg up">▲0.49</div>
+    <div class="pf">
+      <div class="pf-top"><span class="pf-name">적극투자형</span><span class="pf-mix">주식 80 · 실물 15 · 채권 5</span></div>
+      <div class="bar" role="img" aria-label="국내주식 10%, 해외주식 25%, 국내테마 45%, 실물자산 15%, 채권·현금 5%">
+        <span style="width:10%;background:var(--c-dom)"></span>
+        <span style="width:25%;background:var(--c-glb)"></span>
+        <span style="width:45%;background:var(--c-thm)"></span>
+        <span style="width:15%;background:var(--c-real)"></span>
+        <span style="width:5%;background:var(--c-fix)"></span>
       </div>
-      <div>
-        <div class="q-name">WTI ($)</div>
-        <div class="val">90.80</div>
-        <div class="q-chg up">▲0.64%</div>
-      </div>
-      <div>
-        <div class="q-name">브렌트 ($)</div>
-        <div class="val">94.65</div>
-        <div class="q-chg up">▲4.6%</div>
-      </div>
-      <div>
-        <div class="q-name">미 10년물</div>
-        <div class="val">4.731%</div>
-        <div class="q-chg up">▲0.9bp</div>
-      </div>
-      <div>
-        <div class="q-name">금 ($/oz)</div>
-        <div class="val">4,351.69</div>
-        <div class="q-chg dn">▼1.02%</div>
-      </div>
-      <div>
-        <div class="q-name">나스닥100 선물</div>
-        <div class="val">29,485</div>
-        <div class="q-chg dn">▼0.71%</div>
-      </div>
+      <div class="bar-lab"><span>국내 10</span><span>해외 25</span><span>테마 45</span><span>실물 15</span><span>채권 5</span></div>
+      <p>변동성을 기회로 쓰는 고객. 방산·조선을 25%까지 올리고 오늘 −4%대로 밀린 반도체를 15%로 시작합니다. 단 1차 매수는 목표의 1/3, 유가 진정 신호를 확인하며 나눠 담는 전제입니다.</p>
     </div>
+  </div>
 
-    <p class="read">−3.08% 갭다운 후 개인 순매수로 낙폭을 절반 되돌렸습니다. 다만 되돌림의 동력은 저가매수이지 악재 해소가 아니고, 유가와 금리 두 변수는 여전히 상방으로 열려 있습니다.</p>
-  </section>
+  <div class="tw" style="margin-top:14px;">
+    <table>
+      <thead>
+        <tr><th>편입 ETF</th><th class="n">안정</th><th class="n">중립</th><th class="n">적극</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TIGER 단기통안채<span class="sub"><span class="cd">157450</span> · 채권 · 금리 상승기 손실 없는 현금 대기</span></td><td class="n">30</td><td class="n">20</td><td class="n">5</td></tr>
+        <tr><td>TIGER 종합채권(AA-이상)액티브<span class="sub"><span class="cd">451540</span> · 채권 · 우량 크레딧 이자수익</span></td><td class="n">20</td><td class="n">—</td><td class="n">—</td></tr>
+        <tr><td>TIGER 미국배당다우존스<span class="sub"><span class="cd">458730</span> · 해외주식 · 저변동성 배당의 방어력</span></td><td class="n">15</td><td class="n">—</td><td class="n">—</td></tr>
+        <tr><td>TIGER 미국S&amp;P500<span class="sub"><span class="cd">360750</span> · 해외주식 · 국내 지정학 리스크 분산</span></td><td class="n">—</td><td class="n">20</td><td class="n">15</td></tr>
+        <tr><td>TIGER 미국나스닥100<span class="sub"><span class="cd">133690</span> · 해외주식 · 금리 진정 시 반등 탄력</span></td><td class="n">—</td><td class="n">—</td><td class="n">10</td></tr>
+        <tr><td>TIGER 200<span class="sub"><span class="cd">102110</span> · 국내주식 · 6,600선 하회, 저가 분할</span></td><td class="n">10</td><td class="n">15</td><td class="n">10</td></tr>
+        <tr><td>TIGER 은행고배당플러스TOP10<span class="sub"><span class="cd">466940</span> · 국내테마 · 금리 상승 수혜, 금융주 홀로 강세</span></td><td class="n">10</td><td class="n">10</td><td class="n">5</td></tr>
+        <tr><td>TIGER K방산&amp;우주<span class="sub"><span class="cd">463250</span> · 국내테마 · 미군 중동 주둔 장기화 수혜</span></td><td class="n">—</td><td class="n">10</td><td class="n">15</td></tr>
+        <tr><td>TIGER 조선TOP10<span class="sub"><span class="cd">494670</span> · 국내테마 · 탱커 운임·해상 방위 수요</span></td><td class="n">—</td><td class="n">5</td><td class="n">10</td></tr>
+        <tr><td>TIGER 반도체TOP10<span class="sub"><span class="cd">396500</span> · 국내테마 · 조정 분할매수, 1차 목표의 1/3</span></td><td class="n">—</td><td class="n">—</td><td class="n">15</td></tr>
+        <tr><td>TIGER 원유선물Enhanced(H)<span class="sub"><span class="cd">130680</span> · 실물 · 유가를 편입으로 흡수, 롤오버 비용 유의</span></td><td class="n">5</td><td class="n">10</td><td class="n">10</td></tr>
+        <tr><td>TIGER KRX금현물<span class="sub"><span class="cd">0072R0</span> · 실물 · 지정학 헤지, 단독 의존은 금지</span></td><td class="n">10</td><td class="n">10</td><td class="n">5</td></tr>
+        <tr class="tot"><td>합계 (%)</td><td class="n">100</td><td class="n">100</td><td class="n">100</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <section class="sec">
-    <div class="rule"></div>
-    <div class="sh">
-      <h2>전일 미국 마감시황</h2>
-      <span class="note">9/1 (화) · 3거래일 연속 하락</span>
-    </div>
-
-    <div class="tw">
-      <table>
-        <thead>
-          <tr><th>지수 · 자산</th><th class="n">종가</th><th class="n">등락</th><th class="n">등락률</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>S&amp;P 500</td><td class="n">7,631.47</td><td class="n dn">−54.67</td><td class="n dn">−0.71%</td></tr>
-          <tr><td>나스닥 종합</td><td class="n">26,099.77</td><td class="n dn">−271.12</td><td class="n dn">−1.03%</td></tr>
-          <tr><td>다우 산업</td><td class="n">52,767</td><td class="n dn">—</td><td class="n dn">−0.79%</td></tr>
-          <tr><td>WTI 원유</td><td class="n">90.22</td><td class="n up">+4.4</td><td class="n up">+5.2%</td></tr>
-          <tr><td>브렌트유</td><td class="n">94.65</td><td class="n up">+4.2</td><td class="n up">+4.6%</td></tr>
-          <tr><td>미 10년물 <span class="sub">장중 고점</span></td><td class="n">4.798%</td><td class="n up">—</td><td class="n up">—</td></tr>
-          <tr><td>VIX</td><td class="n">16.34</td><td class="n up">+1.42</td><td class="n up">+9.52%</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="notes">
-      <div class="note-row good"><b>강세</b><span>모더나 +9.93%(암 백신), 애플 +2.61%(CEO 승계). 저변동성 SPLV −0.20%로 방어 우위.</span></div>
-      <div class="note-row"><b>약세</b><span>액손 −8.52%, 크라우드스트라이크 −6.90%, 팔로알토 −5.24%. 테슬라·오라클·인텔·마벨 동반 약세.</span></div>
-    </div>
-
-    <p class="read">고밸류 성장주가 금리 상승분을 그대로 할인율로 떠안은 전형적 국면입니다. 유가 급등이 인플레 우려로, 그것이 다시 금리 상단을 열어젖히는 경로입니다.</p>
-  </section>
-</div>
-
-<!-- ============ TAB 2 : 국내시황 ============ -->
-<div class="panel" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
-  <section class="sec">
-    <div class="rule"></div>
-    <div class="sh">
-      <h2>현재 국내 시황</h2>
-      <span class="note">수급 09:26 · 종목 09시대</span>
-    </div>
-
-    <div class="cards">
-      <div class="card">
-        <h3>수급 — 개인이 홀로 받는다</h3>
-        <dl style="margin:6px 0 0;">
-          <div class="kv"><dt>외국인</dt><dd class="dn">−3,029억</dd></div>
-          <div class="kv"><dt>기관</dt><dd class="dn">−3,276억</dd></div>
-          <div class="kv"><dt>개인</dt><dd class="up">+5,116억</dd></div>
-        </dl>
-        <p class="tail">코스닥은 외국인 +199억 순매수로 방향이 갈렸습니다.</p>
-      </div>
-
-      <div class="card">
-        <h3>업종 — 사실상 전 업종 하락</h3>
-        <dl style="margin:6px 0 0;">
-          <div class="kv"><dt>의료·정밀기기</dt><dd class="up">+0.66%</dd></div>
-          <div class="kv"><dt>운송장비·부품</dt><dd class="dn">−3.39%</dd></div>
-          <div class="kv"><dt>건설</dt><dd class="dn">−2.77%</dd></div>
-          <div class="kv"><dt>전기·전자</dt><dd class="dn">−2.67%</dd></div>
-          <div class="kv"><dt>제조</dt><dd class="dn">−2.57%</dd></div>
-        </dl>
-      </div>
-
-      <div class="card">
-        <h3>특징 종목</h3>
-        <dl style="margin:6px 0 0;">
-          <div class="kv"><dt>삼성전자 253,500</dt><dd class="dn">−2.87%</dd></div>
-          <div class="kv"><dt>SK하이닉스 1,648,000</dt><dd class="dn">−2.66%</dd></div>
-          <div class="kv"><dt>SK스퀘어</dt><dd class="dn">−4.59%</dd></div>
-          <div class="kv"><dt>현대차</dt><dd class="dn">−3.93%</dd></div>
-          <div class="kv"><dt>KB금융</dt><dd class="up">+1.75%</dd></div>
-        </dl>
-      </div>
-    </div>
-
-    <p class="read">시장이 파는 것은 '한국'이 아니라 '듀레이션'입니다. 반도체·성장주·운송장비가 맞고 은행이 버티는 구도는 금리와 유가 두 충격에 대한 교과서적 반응입니다. 따라서 대응도 지수 방향에 베팅하는 것이 아니라, 두 충격의 반대편에 서 있는 자산을 채워 넣는 방식이어야 합니다.</p>
-  </section>
-</div>
-
-<!-- ============ TAB 3 : 이슈 ============ -->
-<div class="panel" id="p3" role="tabpanel" aria-labelledby="t3" hidden>
-  <section class="sec">
-    <div class="rule"></div>
-    <div class="sh">
-      <h2>특별 이슈 &amp; 뉴스</h2>
-      <span class="note">영향도 순 · 4건</span>
-    </div>
-
-    <div class="issues">
-      <div class="iss">
-        <span class="tag t-crit">지정학 · 최우선</span>
-        <h3>미·이란 호르무즈 충돌 재개 — 원유 탱커 통항이 멈췄다</h3>
-        <p>미 중부사령부가 9/1 정오부터 이란 혁명수비대를 타격, 케슘섬·반다르아바스·차바하르에서 폭발이 보고됐습니다. 8/31에는 유조선 2척(각 200만 배럴)이 피격됐고 한국 시노코 운항 선박이 포함됐습니다. 같은 날 호르무즈 통과 선박은 5척(10일 평균 14척), 원유 탱커는 0척이었습니다.</p>
-        <p class="imp">전면전은 아니지만 통항이 물리적으로 막히면 유가는 재고가 아니라 물류가 결정합니다. 이란의 추가 보복 가능성이 남아 있습니다.</p>
-      </div>
-
-      <div class="iss">
-        <span class="tag t-oil">정책 전환</span>
-        <h3>미국의 목표가 '종전 합의'에서 '석유 확보'로 바뀌었다</h3>
-        <p>크리스 라이트 에너지장관은 "이란의 협조 여부와 관계없이 호르무즈를 통한 석유·가스 수송을 보장하겠다"고 밝혔습니다. 본토 공습에서 유조선 호위·기뢰 제거 중심의 해상 작전으로 무게가 옮겨가고 있습니다.</p>
-        <p class="imp">함의는 '단기 스파이크'가 아니라 '장기 주둔'입니다. 지정학 프리미엄이 이벤트에서 상수로 바뀌며 방산·조선·에너지 인프라의 시간축이 길어집니다.</p>
-      </div>
-
-      <div class="iss">
-        <span class="tag t-rate">금리 · 채권</span>
-        <h3>글로벌 채권 동반 매도 — 일본 10년물이 30년 만에 3% 돌파</h3>
-        <p>미 10년물이 장중 4.798%로 작년 1월 이후 최고, 일본 10년물은 1996년 이후 처음 3%를 넘었습니다. 국내는 한국은행이 기준금리를 3.00%까지 올린 긴축 사이클이 진행 중입니다.</p>
-        <p class="imp">이 국면에서 장기채는 안전자산이 아니라 위험자산입니다. 채권 비중은 유지하되 듀레이션은 짧게 — 이번 제안에서 단기물을 채권 축의 중심에 둔 이유입니다.</p>
-      </div>
-
-      <div class="iss">
-        <span class="tag t-dom">국내 파급</span>
-        <h3>중동산 원유 의존도가 그대로 원가로 들어온다</h3>
-        <p>유가뿐 아니라 해상운임과 보험료가 동시에 오르는 복합 부담입니다. 정유·화학·항공·해운의 원가가 직접 영향권이고 소비자물가에도 시차를 두고 반영됩니다. 오늘 운송장비·부품이 업종 최하위인 것은 우연이 아닙니다.</p>
-        <p class="imp">반대편에는 조선(탱커 발주·해상 방위)과 방산이 있습니다. 같은 뉴스가 한쪽에는 원가, 다른 쪽에는 수주입니다.</p>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ TAB 4 : 포트폴리오 ============ -->
-<div class="panel" id="p4" role="tabpanel" aria-labelledby="t4" hidden>
-  <section class="sec">
-    <div class="rule"></div>
-    <div class="sh">
-      <h2>ETF 포트폴리오 제안</h2>
-      <span class="note">국내 상장 ETF · 3유형</span>
-    </div>
-
-    <p class="read" style="margin-top:0;">네 가지 원칙이 세 포트폴리오에 공통으로 깔려 있습니다. ① 듀레이션은 짧게 ② 유가는 헤지가 아니라 편입으로 ③ 지정학 프리미엄은 방산·조선으로 ④ 반도체는 버리지 않고 나눠 담기. 차이는 베팅 크기뿐입니다.</p>
-
-    <div class="legend" style="margin-top:12px;" aria-hidden="true">
-      <span><i style="background:var(--c-dom)"></i>국내주식</span>
-      <span><i style="background:var(--c-glb)"></i>해외주식</span>
-      <span><i style="background:var(--c-thm)"></i>국내테마</span>
-      <span><i style="background:var(--c-real)"></i>실물자산</span>
-      <span><i style="background:var(--c-fix)"></i>채권·현금</span>
-    </div>
-
-    <div class="pfs">
-      <div class="pf">
-        <div class="pf-top">
-          <span class="pf-name">안정추구형</span>
-          <span class="pf-mix">주식 35 · 실물 15 · 채권 50</span>
-        </div>
-        <div class="bar" role="img" aria-label="국내주식 10%, 해외주식 15%, 국내테마 10%, 실물자산 15%, 채권·현금 50%">
-          <span style="width:10%;background:var(--c-dom)"></span>
-          <span style="width:15%;background:var(--c-glb)"></span>
-          <span style="width:10%;background:var(--c-thm)"></span>
-          <span style="width:15%;background:var(--c-real)"></span>
-          <span style="width:50%;background:var(--c-fix)"></span>
-        </div>
-        <div class="bar-lab"><span>국내 10</span><span>해외 15</span><span>테마 10</span><span>실물 15</span><span>채권 50</span></div>
-        <p>원금 방어가 1순위인 고객. 채권 절반을 깔되 만기를 짧게 가져가 금리 상승 손실을 차단하고, 주식은 배당과 은행으로만 노출합니다. 유가·금은 보험 성격의 소액입니다.</p>
-      </div>
-
-      <div class="pf">
-        <div class="pf-top">
-          <span class="pf-name">위험중립형</span>
-          <span class="pf-mix">주식 60 · 실물 20 · 채권 20</span>
-        </div>
-        <div class="bar" role="img" aria-label="국내주식 15%, 해외주식 20%, 국내테마 25%, 실물자산 20%, 채권·현금 20%">
-          <span style="width:15%;background:var(--c-dom)"></span>
-          <span style="width:20%;background:var(--c-glb)"></span>
-          <span style="width:25%;background:var(--c-thm)"></span>
-          <span style="width:20%;background:var(--c-real)"></span>
-          <span style="width:20%;background:var(--c-fix)"></span>
-        </div>
-        <div class="bar-lab"><span>국내 15</span><span>해외 20</span><span>테마 25</span><span>실물 20</span><span>채권 20</span></div>
-        <p>이번 국면의 표준 해법. 실물자산을 20%까지 올려 유가 충격을 포트폴리오 안에서 상쇄하고, 테마는 이 뉴스가 실적으로 연결되는 방산·조선에만 집중합니다. 반도체는 아직 담지 않습니다.</p>
-      </div>
-
-      <div class="pf">
-        <div class="pf-top">
-          <span class="pf-name">적극투자형</span>
-          <span class="pf-mix">주식 80 · 실물 15 · 채권 5</span>
-        </div>
-        <div class="bar" role="img" aria-label="국내주식 10%, 해외주식 25%, 국내테마 45%, 실물자산 15%, 채권·현금 5%">
-          <span style="width:10%;background:var(--c-dom)"></span>
-          <span style="width:25%;background:var(--c-glb)"></span>
-          <span style="width:45%;background:var(--c-thm)"></span>
-          <span style="width:15%;background:var(--c-real)"></span>
-          <span style="width:5%;background:var(--c-fix)"></span>
-        </div>
-        <div class="bar-lab"><span>국내 10</span><span>해외 25</span><span>테마 45</span><span>실물 15</span><span>채권 5</span></div>
-        <p>변동성을 기회로 쓰는 고객. 방산·조선을 25%까지 올리고 오늘 −2.9% 밀린 반도체를 15%로 시작합니다. 단 1차 매수는 목표의 1/3, 유가 진정 신호를 확인하며 나눠 담는 전제입니다.</p>
-      </div>
-    </div>
-
-    <div class="tw" style="margin-top:14px;">
-      <table>
-        <thead>
-          <tr><th>편입 ETF</th><th class="n">안정</th><th class="n">중립</th><th class="n">적극</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>TIGER 단기통안채<span class="sub"><span class="cd">157450</span> · 채권 · 금리 상승기 손실 없는 현금 대기</span></td>
-            <td class="n">30</td><td class="n">20</td><td class="n">5</td>
-          </tr>
-          <tr>
-            <td>TIGER 종합채권(AA-이상)액티브<span class="sub"><span class="cd">451540</span> · 채권 · 우량 크레딧 이자수익</span></td>
-            <td class="n">20</td><td class="n">—</td><td class="n">—</td>
-          </tr>
-          <tr>
-            <td>TIGER 미국배당다우존스<span class="sub"><span class="cd">458730</span> · 해외주식 · 저변동성 배당의 방어력</span></td>
-            <td class="n">15</td><td class="n">—</td><td class="n">—</td>
-          </tr>
-          <tr>
-            <td>TIGER 미국S&amp;P500<span class="sub"><span class="cd">360750</span> · 해외주식 · 국내 지정학 리스크 분산</span></td>
-            <td class="n">—</td><td class="n">20</td><td class="n">15</td>
-          </tr>
-          <tr>
-            <td>TIGER 미국나스닥100<span class="sub"><span class="cd">133690</span> · 해외주식 · 금리 진정 시 반등 탄력</span></td>
-            <td class="n">—</td><td class="n">—</td><td class="n">10</td>
-          </tr>
-          <tr>
-            <td>TIGER 200<span class="sub"><span class="cd">102110</span> · 국내주식 · 6,600선 코어, 저가 분할</span></td>
-            <td class="n">10</td><td class="n">15</td><td class="n">10</td>
-          </tr>
-          <tr>
-            <td>TIGER 은행고배당플러스TOP10<span class="sub"><span class="cd">466940</span> · 국내테마 · 금리 상승 수혜, KB금융 +1.75%</span></td>
-            <td class="n">10</td><td class="n">10</td><td class="n">5</td>
-          </tr>
-          <tr>
-            <td>TIGER K방산&amp;우주<span class="sub"><span class="cd">463250</span> · 국내테마 · 미군 중동 주둔 장기화 수혜</span></td>
-            <td class="n">—</td><td class="n">10</td><td class="n">15</td>
-          </tr>
-          <tr>
-            <td>TIGER 조선TOP10<span class="sub"><span class="cd">494670</span> · 국내테마 · 탱커 운임·해상 방위 수요</span></td>
-            <td class="n">—</td><td class="n">5</td><td class="n">10</td>
-          </tr>
-          <tr>
-            <td>TIGER 반도체TOP10<span class="sub"><span class="cd">396500</span> · 국내테마 · 조정 분할매수, 1차 목표의 1/3</span></td>
-            <td class="n">—</td><td class="n">—</td><td class="n">15</td>
-          </tr>
-          <tr>
-            <td>TIGER 원유선물Enhanced(H)<span class="sub"><span class="cd">130680</span> · 실물 · 유가를 편입으로 흡수, 롤오버 비용 유의</span></td>
-            <td class="n">5</td><td class="n">10</td><td class="n">10</td>
-          </tr>
-          <tr>
-            <td>TIGER KRX금현물<span class="sub"><span class="cd">0072R0</span> · 실물 · 지정학 헤지, 단독 의존은 금지</span></td>
-            <td class="n">10</td><td class="n">10</td><td class="n">5</td>
-          </tr>
-          <tr class="tot"><td>합계 (%)</td><td class="n">100</td><td class="n">100</td><td class="n">100</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="callout">
-      <h3>다음 확인 지점</h3>
-      <ol>
-        <li>호르무즈 통항 선박 수의 정상화(10일 평균 14척) — 회복되면 유가·방산 비중을 먼저 줄입니다.</li>
-        <li>미 10년물 4.80% 상단 돌파 여부 — 뚫리면 듀레이션을 더 줄이고 성장주 재진입을 미룹니다.</li>
-        <li>외국인 순매도의 지속 여부 — 개인 홀로 받는 구조는 오래 버티지 못합니다.</li>
-      </ol>
-    </div>
-  </section>
-</div>
+  <div class="callout">
+    <h3>다음 확인 지점</h3>
+    <ol>
+      <li>9월 4일 미 고용지표와 9월 11일 CPI — 연준 인상 여부가 결정되는 자리입니다. 그 전까지는 분할 대응.</li>
+      <li>호르무즈 통항 선박 수의 정상화(10일 평균 14척) — 회복되면 유가·방산 비중을 먼저 줄입니다.</li>
+      <li>미 10년물 4.80% 상단 돌파 여부 — 뚫리면 듀레이션을 더 줄이고 성장주 재진입을 미룹니다.</li>
+      <li>외국인 순매도의 지속 여부 — 개인 홀로 2조원을 받는 구조는 오래 버티지 못합니다.</li>
+    </ol>
+  </div>
+</section>
 
 <footer class="foot">
-  <p><b>출처</b> 시세 Investing.com(항목별 기준시각 표기) · 시황 아시아경제·머니투데이·Businesskorea·The Motley Fool · 이슈 이데일리·헤럴드경제</p>
+  <p><b>출처</b> 지수·수급·업종·종목 아시아경제(9/2 13:30) · 반도체 이슈 한국경제·뉴스토마토 · 연준 머니투데이 · 미국 마감 The Motley Fool·머니투데이 · 중동 이데일리·헤럴드경제 · 원자재·금리 Investing.com</p>
   <p style="margin-top:6px;">본 자료는 정보 제공 목적이며 특정 종목의 매매를 권유하지 않습니다. 기재 시세는 작성 시점 스냅샷으로 실제 체결가와 다를 수 있고, 출처별 기준시각 차이로 수치가 상이할 수 있습니다. ETF는 원금 손실이 발생할 수 있으며 예금자보호법의 보호를 받지 않습니다. 파생상품·환헤지형 ETF는 롤오버 비용과 환율 변동에 따른 추가 위험이 있습니다. 투자 결정 전 투자설명서를 확인하시기 바랍니다.</p>
 </footer>
 
 </div>
 
+<script id="live-data" type="application/json">
+{
+  "updated": "2026.09.02 13:30",
+  "session": "장중",
+  "indices": {
+    "KOSPI": {
+      "v": 6584.77,
+      "chg": -251.03,
+      "pct": -3.67,
+      "open": 6625.47,
+      "high": 6687.37,
+      "low": null,
+      "prev": 6835.8
+    },
+    "KOSDAQ": {
+      "v": 812.69,
+      "chg": -8.61,
+      "pct": -1.04,
+      "open": 802.8,
+      "high": null,
+      "low": null,
+      "prev": 821.3
+    }
+  },
+  "quotes": [
+    {
+      "k": "usdkrw",
+      "name": "원/달러",
+      "v": 1373.56,
+      "pct": 0.04,
+      "d": 2
+    },
+    {
+      "k": "wti",
+      "name": "WTI ($)",
+      "v": 90.8,
+      "pct": 0.64,
+      "d": 2
+    },
+    {
+      "k": "brent",
+      "name": "브렌트 ($)",
+      "v": 94.65,
+      "pct": 4.6,
+      "d": 2
+    },
+    {
+      "k": "ust10",
+      "name": "미 10년물",
+      "v": 4.731,
+      "pct": 0.19,
+      "d": 3,
+      "unit": "%"
+    },
+    {
+      "k": "ust30",
+      "name": "미 30년물",
+      "v": 5.157,
+      "pct": -0.33,
+      "d": 3,
+      "unit": "%"
+    },
+    {
+      "k": "gold",
+      "name": "금 ($/oz)",
+      "v": 4351.69,
+      "pct": -1.02,
+      "d": 2
+    }
+  ],
+  "flows": {
+    "indi": 19819,
+    "foreign": -15985,
+    "inst": -16376,
+    "unit": "억원"
+  },
+  "sectors": [
+    {
+      "name": "의료·정밀기기",
+      "pct": 0.83
+    },
+    {
+      "name": "섬유·의류",
+      "pct": 0.04
+    },
+    {
+      "name": "제조",
+      "pct": -3.97
+    },
+    {
+      "name": "건설",
+      "pct": -4.02
+    },
+    {
+      "name": "전기·전자",
+      "pct": -4.13
+    },
+    {
+      "name": "운송장비·부품",
+      "pct": -5.44
+    }
+  ],
+  "movers": {
+    "SK": -7.6,
+    "포스코퓨처엠": -7.4,
+    "HD한국조선해양": -7.2,
+    "두산": -7.0,
+    "SK스퀘어": -7.0,
+    "HD현대일렉트릭": -6.6,
+    "SK하이닉스": -4.4,
+    "삼성전자": -4.2,
+    "메리츠금융지주": 4.0,
+    "에쓰오일": 0.6,
+    "신한지주": 0.2,
+    "ISC": 9.8,
+    "서진시스템": -8.4
+  }
+}
+</script>
 <script>
 (function(){
-  var tabs = [].slice.call(document.querySelectorAll('.tabs button'));
-  function show(i){
-    tabs.forEach(function(t,k){
-      var on = k === i;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-    window.scrollTo(0,0);
+  var D;
+  try { D = JSON.parse(document.getElementById('live-data').textContent); }
+  catch(e){ return; }
+
+  function nf(n,d){
+    if(n===null||n===undefined) return '—';
+    return Number(n).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
   }
-  tabs.forEach(function(t,i){
-    t.addEventListener('click', function(){ show(i); });
-    t.addEventListener('keydown', function(e){
-      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-      if(!d) return;
-      e.preventDefault();
-      var n = (i + d + tabs.length) % tabs.length;
-      tabs[n].focus(); show(n);
-    });
+  function cls(n){ return n>0 ? 'up' : (n<0 ? 'dn' : ''); }
+  function arw(n){ return n>0 ? '▲' : (n<0 ? '▼' : '－'); }
+  function pc(n){
+    if(n===null||n===undefined) return '—';
+    return (n>0?'+':n<0?'−':'') + Math.abs(n).toFixed(2) + '%';
+  }
+  function eok(n){
+    if(n===null||n===undefined) return '—';
+    var s = n<0?'−':'+', a=Math.abs(n);
+    if(a>=10000) return s+Math.floor(a/10000)+'조 '+(a%10000).toLocaleString('ko-KR')+'억';
+    return s+a.toLocaleString('ko-KR')+'억';
+  }
+  function set(id,txt){ var el=document.getElementById(id); if(el) el.textContent=txt; }
+
+  /* 갱신 시각 */
+  set('stamp', D.updated || '—');
+  var hm = (D.updated||'').split(' ')[1] || '—';
+  set('stamp2', hm + ' 갱신');
+  set('sess', D.session ? '('+D.session+')' : '');
+
+  /* 지수 타일 */
+  Object.keys(D.indices||{}).forEach(function(code){
+    var q = D.indices[code];
+    var box = document.querySelector('[data-idx="'+code+'"]');
+    if(!box || !q) return;
+    var big = box.querySelector('.big'), chg = box.querySelector('.big-chg'),
+        meta = box.querySelector('.idx-meta');
+    big.textContent = nf(q.v,2);
+    big.className = 'big ' + cls(q.pct);
+    chg.textContent = arw(q.pct) + nf(Math.abs(q.chg),2) + ' (' + pc(q.pct) + ')';
+    chg.className = 'big-chg ' + cls(q.pct);
+    var l1 = [];
+    if(q.open) l1.push('시가 '+nf(q.open,2));
+    if(q.high) l1.push('고 '+nf(q.high,2));
+    if(q.low)  l1.push('저 '+nf(q.low,2));
+    meta.innerHTML = (l1.join(' · ')||'&nbsp;') + '<br>전일 ' + nf(q.prev,2);
   });
+
+  /* 환율·원자재·금리 스트립 */
+  var strip = document.getElementById('q-strip');
+  if(strip && D.quotes){
+    strip.innerHTML = D.quotes.map(function(q){
+      var unit = q.unit || '';
+      return '<div>'
+        + '<div class="q-name">'+q.name+(q.approx?' <span title="시가 대비">※</span>':'')+'</div>'
+        + '<div class="val">'+nf(q.v, q.d==null?2:q.d)+unit+'</div>'
+        + '<div class="q-chg '+cls(q.pct)+'">'+arw(q.pct)+' '+pc(q.pct).replace(/^[+−]/,'')+'</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  /* 수급 */
+  var flow = document.getElementById('flow');
+  if(flow && D.flows){
+    flow.innerHTML = [['개인','indi'],['외국인','foreign'],['기관','inst']].map(function(p){
+      var v = D.flows[p[1]];
+      return '<div><div class="f-name">'+p[0]+'</div>'
+        + '<div class="fnum '+cls(v)+'">'+eok(v)+'</div>'
+        + '<div class="f-tag">'+(v>=0?'순매수':'순매도')+'</div></div>';
+    }).join('');
+  }
+
+  /* 업종별 등락률 */
+  var sect = document.getElementById('sectors');
+  if(sect && D.sectors && D.sectors.length){
+    var max = Math.max.apply(null, D.sectors.map(function(s){ return Math.abs(s.pct); })) || 1;
+    sect.innerHTML = D.sectors.map(function(s){
+      var w = Math.max(2, Math.round(Math.abs(s.pct)/max*100));
+      var col = s.pct>=0 ? 'var(--up)' : 'var(--down)';
+      return '<div class="srow">'
+        + '<span class="s-nm">'+s.name+'</span>'
+        + '<span class="s-track"><span class="s-fill" style="width:'+w+'%;background:'+col+'"></span></span>'
+        + '<span class="s-val '+cls(s.pct)+'">'+pc(s.pct)+'</span>'
+        + '</div>';
+    }).join('');
+  }
+
+  /* 특징 종목 등락률 */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-stock]'), function(td){
+    var v = D.movers ? D.movers[td.getAttribute('data-stock')] : null;
+    if(v===null||v===undefined) return;
+    td.textContent = pc(v);
+    td.className = 'n ' + cls(v);
+  });
+})();
+</script>
+
+<script>
+/* 장중 자동 새로고침 — 평일 08:40~15:50 KST, 5분 주기.
+   화면이 백그라운드일 때는 건너뛰고, 새로고침 전 스크롤 위치를 저장해 복원한다. */
+(function(){
+  var PERIOD = 5 * 60 * 1000;
+
+  try {
+    var y = sessionStorage.getItem('mas-scroll');
+    if (y !== null) {
+      sessionStorage.removeItem('mas-scroll');
+      window.addEventListener('load', function(){
+        window.scrollTo(0, parseInt(y, 10) || 0);
+      });
+    }
+  } catch (e) {}
+
+  function inSession(){
+    var d = new Date(Date.now() + 9 * 3600 * 1000);   // KST
+    var dow = d.getUTCDay();
+    if (dow === 0 || dow === 6) return false;          // 주말
+    var m = d.getUTCHours() * 60 + d.getUTCMinutes();
+    return m >= 8 * 60 + 40 && m <= 15 * 60 + 50;
+  }
+
+  setInterval(function(){
+    if (!inSession()) return;
+    if (document.visibilityState === 'hidden') return;
+    try { sessionStorage.setItem('mas-scroll', String(window.scrollY || 0)); } catch (e) {}
+    location.reload();
+  }, PERIOD);
 })();
 </script>
 </body>
