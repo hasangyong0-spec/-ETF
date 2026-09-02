@@ -1,0 +1,43 @@
+name: 시세 자동 갱신
+
+# 한국 시각(KST) = UTC + 9시간
+#  UTC 일~목 23:00~23:59  →  KST 월~금 08:00~08:59
+#  UTC 월~금 00:00~06:59  →  KST 월~금 09:00~15:59
+# 실제 갱신 여부는 스크립트가 KST 08:40~15:50 인지 다시 확인한다.
+on:
+  schedule:
+    - cron: '*/10 23 * * 0-4'
+    - cron: '*/10 0-6 * * 1-5'
+  workflow_dispatch:        # 저장소 Actions 탭에서 수동 실행 가능
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-quotes
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 시세 수집 및 index.html 갱신
+        run: node scripts/update-quotes.mjs
+
+      - name: 변경 사항 커밋
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "변경 없음 — 커밋하지 않습니다."
+            exit 0
+          fi
+          git config user.name  "quotes-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "시세 자동 갱신 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')"
+          git push
