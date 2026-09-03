@@ -764,7 +764,11 @@ tbody tr.tot td{background:var(--soft);font-weight:700;color:var(--navy);
     if (!inSession()) return;
     if (document.visibilityState === 'hidden') return;
     try { sessionStorage.setItem('mas-scroll', String(window.scrollY || 0)); } catch (e) {}
-    location.reload();
+    // GitHub Pages는 정적 파일에 Cache-Control: max-age=600(10분)을 붙여 내려준다.
+    // 새로고침 주기(5분)가 이보다 짧아서 location.reload()만으로는 브라우저가
+    // 캐시된(=예전) 페이지를 그대로 재사용해버린다. 매번 URL을 바꿔 강제로
+    // 새 요청을 만들어 캐시를 우회한다.
+    location.href = location.pathname + '?_=' + Date.now();
   }, PERIOD);
 })();
 </script>
