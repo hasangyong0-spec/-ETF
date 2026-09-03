@@ -1,0 +1,39 @@
+name: Update Quotes
+
+on:
+  schedule:
+    # UTC 00:00-07:50, 10분 간격, 월~금 (KST 09:00~16:50 커버, 여유 포함)
+    - cron: '*/10 0-7 * * 1-5'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-quotes
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run scraper
+        run: node scripts/update-quotes.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "quote-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore: update live quotes [skip ci]"
+            git push
+          fi
