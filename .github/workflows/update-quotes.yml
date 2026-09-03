@@ -3,7 +3,7 @@ name: Update Quotes
 on:
   schedule:
     # UTC 00:00-07:50, 10분 간격, 월~금 (KST 09:00~16:50 커버, 여유 포함)
-    - cron: '*/10 0-7 * * 1-5'
+       - cron: '4,14,24,34,44,54 0-7 * * 1-5'
   workflow_dispatch: {}
 
 permissions:
